@@ -19,6 +19,8 @@ public class Constants {
 	public static final String PRODUCTINFOPAGE_WISHLIST_SUCCESS_MESSAGE = " Success: You have added ";
 	public static final int PRODUCTINFOPAGE_TIMEOUT =10;
 	public static final int PRODUCTINFOPAGE_POOLING_TIME = 1;
+	public static final int ACCOUNTPAGE_TIMEOUT = 10;
+
 
 	public  static List<String> accountHeaderSectionsList() {
 		List<String> accountSectionList = new ArrayList<String>();

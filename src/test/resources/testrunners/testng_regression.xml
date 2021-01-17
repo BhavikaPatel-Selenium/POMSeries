@@ -4,18 +4,17 @@
 <suite name="Shop Cart Test automtion regression suite"
 	thread-count="3" parallel="tests" verbose="3">
 	<listeners>
+		<!-- <listener class-name="com.qa.opencart.testlisteners.ExtentReportListener" 
+			/> -->
+		<listener
+			class-name="com.qa.opencart.testlisteners.TestAllureListener" />
 		<!-- <listener
-			class-name="com.qa.opencart.testlisteners.ExtentReportListener" />
-		<listener
-			class-name="com.qa.opencart.testlisteners.TestAllureListener" /> -->
-		<listener
-			class-name="com.qa.opencart.testlisteners.TesultsListener" />
+			class-name="com.qa.opencart.testlisteners.TesultsListener" /> -->
 	</listeners>
 	<test name="Login page Test">
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
-
 	</test>
 
 	<test name="Register page Test">
@@ -25,10 +24,16 @@
 
 	</test>
 
-	<!-- <test name="Account page Test"> <classes> <class name="com.qa.opencart.tests.AccountsPageTest" 
-		/> </classes> </test> <test name="Product Info page Test"> <classes> <class 
-		name="com.qa.opencart.tests.ProductInfoPageTest" /> </classes> </test> <test 
-		name="Accounts page Test"> <classes> <class name="com.qa.opencart.tests.AccountsPageTest" 
-		/> </classes> </test> -->
+	<test name="Account page Test">
+		<classes>
+			<class name="com.qa.opencart.tests.AccountsPageTest" />
+		</classes>
+	</test>
+
+	<test name="Product Info page Test">
+		<classes>
+			<class name="com.qa.opencart.tests.ProductInfoPageTest" />
+		</classes>
+	</test>
 
 </suite>
