@@ -10,11 +10,13 @@ import org.openqa.selenium.WebElement;
 
 import com.qa.opencart.utilities.Constants;
 import com.qa.opencart.utilities.ElementUtil;
+import com.qa.opencart.utilities.JavaScriptUtil;
 
 public class ProductInfoPage {
 	
 	private WebDriver driver;
 	private ElementUtil elementUtil;
+	private JavaScriptUtil jsUtil;
 	
 	//By locators
 	private By addTocartBtn = By.cssSelector("#cart button");
@@ -32,6 +34,7 @@ public class ProductInfoPage {
 	public ProductInfoPage(WebDriver driver) {
 		this.driver = driver;
 		elementUtil = new ElementUtil(this.driver);
+		jsUtil = new JavaScriptUtil(this.driver);
 	}
 	
 	public int verifyResultImagesCount() {
@@ -72,7 +75,8 @@ public class ProductInfoPage {
 	}
 	
 	public boolean verifyWriteAReviewLink() {
-		return elementUtil.getElement(writeReview).isDisplayed();
+		jsUtil.scrollIntoView(elementUtil.getElement(writeReview));
+		return elementUtil.doIsDisplayed(writeReview);
 	}
 	
 	public boolean isWishListBtnDisplay() {
@@ -82,6 +86,8 @@ public class ProductInfoPage {
 	public boolean verifyWishListSuccessMsg() {
 		elementUtil.actionsClickWhenReady(wishListBtn, Constants.PRODUCTINFOPAGE_TIMEOUT);
 		String successText = elementUtil.waitForElementWithFluentWait(wishListSucessMessage,Constants.PRODUCTINFOPAGE_TIMEOUT,Constants.PRODUCTINFOPAGE_POOLING_TIME).getText();
+		jsUtil.scrollIntoView(elementUtil.getElement(wishListSucessMessage));
+		
 		System.out.println(successText);
 		if(successText.contains("wish list")) {
 			return true;

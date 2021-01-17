@@ -10,11 +10,13 @@ import org.openqa.selenium.WebElement;
 
 import com.qa.opencart.utilities.Constants;
 import com.qa.opencart.utilities.ElementUtil;
+import com.qa.opencart.utilities.JavaScriptUtil;
 
 public class RegisterPage {
 	
 	private WebDriver driver;
 	private ElementUtil elementUtil;
+	private JavaScriptUtil jsUtil;
 	
 	//1. By locators
 	private By logo = By.cssSelector("div#logo a");
@@ -49,6 +51,7 @@ public class RegisterPage {
 	public RegisterPage(WebDriver driver) {
 		this.driver = driver;
 		elementUtil = new ElementUtil(this.driver);
+		jsUtil= new JavaScriptUtil(this.driver);
 	}
 	
 	//3. Page Actions
@@ -150,6 +153,7 @@ public class RegisterPage {
 	}
 	
 	public boolean isfooterPowerTextDisplay() {
+		jsUtil.scrollIntoView(elementUtil.getElement(footerPowerText));
 		return elementUtil.doIsDisplayed(footerPowerText);
 	}
 	

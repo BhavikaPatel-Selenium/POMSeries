@@ -65,7 +65,8 @@ public class AccountsPageTest extends BaseTest {
 	
 	@DataProvider
 	public Object[][] getsearchTestData() {
-		return ExcelUtil.getExcelData("search product data");
+		 Object[][] searchTestData = ExcelUtil.getExcelData("search product data");
+		 return searchTestData;
 	}
 	
 	@Description("Account search feature test with different products")
@@ -74,7 +75,6 @@ public class AccountsPageTest extends BaseTest {
 	public void verifySearchTest(String productName) {
 		Assert.assertTrue(accountsPage.doSearch(productName));
 	}
-	
 	
 	
 	@Description("Account search results test with iMac")

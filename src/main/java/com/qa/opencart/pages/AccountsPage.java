@@ -69,7 +69,7 @@ public class AccountsPage {
 	}
 	
 	public ProductInfoPage selectProductFromResults(String productName) {
-		List<WebElement> productResultList =  elementUtil.getElements(searchResults);
+		List<WebElement> productResultList =  elementUtil.visibiblityOfAllElements(searchResults, Constants.ACCOUNTPAGE_TIMEOUT);
 		for (WebElement e : productResultList) {
 			String product = e.getText();
 			if(product.equals(productName)) {
