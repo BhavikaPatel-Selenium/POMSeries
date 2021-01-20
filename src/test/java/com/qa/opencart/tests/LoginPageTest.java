@@ -22,6 +22,7 @@ public class LoginPageTest extends BaseTest {
 	@Severity(SeverityLevel.MINOR)
 	public void verifyLoginPageTitleTest() {
 		String title = loginPage.getLoginPageTitle();
+		System.out.println("Verifying login page title test");
 		System.out.println("Login page title: " +title );
 		Assert.assertEquals(title, Constants.LOGINPAGE_TITLE);
 	}
