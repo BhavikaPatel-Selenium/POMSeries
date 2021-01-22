@@ -1,52 +1,52 @@
-pipeline{
-agent any
+pipeline { 
+agent any 
+    stages { 
+        
+        stage ('Build') { 
+            steps{
+                echo "Building the test automation for demo cart app"
 
-    stages{
-    
-        stage('Build'){
-             steps{
-              echo "building project"
-             }
-         }
-          stage('Deploy Dev'){
-             steps{
-              echo "Deploy Dev"
-             }
-         }
-          stage('Deploy Qa'){
-             steps{
-              echo "Deploy Qa"
-             }
-         }
-          stage('Sanity test'){
-             steps{
-              echo "Sanity test"
-             }
-         }
-          stage('Regression test'){
-             steps{
-              echo "Regression test"
-             }
-         }
-          stage('Depoy on stage'){
-             steps{
-              echo "Depoy on stage"
-             }
-         }
-          stage('Sanity test on stage'){
-             steps{
-              echo "Sanity test on stage"
-             }
-         }
-            stage('Regression test on stage'){
-             steps{
-              echo "Regression test on stage"
-             }
-         }
-          stage('Deploy on production'){
-             steps{
-              echo "Deploy on production"
-             }
-         }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    bat "mvn clean install"
+                }
+            }
+        }
+                
+     
+        stage('Publish Allure Reports') {
+           steps {
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: '/allure-results']]
+                    ])
+                }
+            }
+        }
+        
+        
+        stage('Publish Extent Report'){
+            steps{
+                     publishHTML([allowMissing: false,
+                                  alwaysLinkToLastBuild: false, 
+                                  keepAll: false, 
+                                  reportDir: 'build', 
+                                  reportFiles: 'TestExecutionReport.html', 
+                                  reportName: 'HTML Extent Report', 
+                                  reportTitles: ''])
+            }
+        }
+        
+        
+        
     }
-}
+
+ }
