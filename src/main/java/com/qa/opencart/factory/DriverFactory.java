@@ -26,7 +26,7 @@ public class DriverFactory {
 	Properties prop;
 	public static String highlight;
 	OptionsManager optionsManager;
-	public static  ThreadLocal<WebDriver> tldriver = new ThreadLocal<WebDriver>();
+	public static ThreadLocal<WebDriver> tldriver = new ThreadLocal<WebDriver>();
 
 	/**
 	 * This method is used to initialize the webdriver on the basis of given browser
@@ -39,16 +39,15 @@ public class DriverFactory {
 
 		String browserName = prop.getProperty("browser");
 		System.out.println("browser name is: " + browserName);
-		
+
 		highlight = prop.getProperty("highlight").trim();
 		optionsManager = new OptionsManager(prop);
-		
+
 		if (browserName.equals("chrome")) {
 			WebDriverManager.chromedriver().setup();
-			//driver = new ChromeDriver(optionsManager.getChromeOptions());
+			// driver = new ChromeDriver(optionsManager.getChromeOptions());
 			tldriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
-		} 
-		else if (browserName.equals("safari")) {
+		} else if (browserName.equals("safari")) {
 			driver = new SafariDriver();
 		} else {
 			System.out.println("Please pass the correct browser name : " + browserName);
@@ -60,7 +59,7 @@ public class DriverFactory {
 		return getDriver();
 
 	}
-	
+
 	public static synchronized WebDriver getDriver() {
 		return tldriver.get();
 	}
@@ -72,31 +71,67 @@ public class DriverFactory {
 	 */
 	public Properties init_prop() {
 
+		FileInputStream ip = null;
 		prop = new Properties();
-		try {
-			FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
-			prop.load(ip);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String env = System.getProperty("env");
+		System.out.println("Runnning on the environment: " + env);
 
+		if (env == null) {
+			try {
+				ip = new FileInputStream("./src/test/resources/config/dev.config.properties");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				switch (env) {
+				case "dev":
+					ip = new FileInputStream("./src/test/resources/config/dev.config.properties");
+					break;
+				case "qa":
+					ip = new FileInputStream("./src/test/resources/config/qa.config.properties");
+					break;
+				case "stage":
+					ip = new FileInputStream("./src/test/resources/config/stage.config.properties");
+					break;
+				case "prod":
+					ip = new FileInputStream("./src/test/resources/config/config.properties");
+					break;
+				default:
+					System.out.println("Please pass the correct environment");
+					break;
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("File nout found at given place");
+			} 
+			
+			try {
+					prop.load(ip);
+			} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					System.out.println("File nout found at given place");
+			} catch (IOException e) {
+					e.printStackTrace();
+			}
+			return prop;
+		}
 		return prop;
 	}
-	
-	
+
 	/**
 	 * To take screenshot
 	 */
-	
+
 	public String getScreenshot() {
-		//If you find cross icon instead of image in screenshots folder then use below 2 lines		
-		//String src = ((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.BASE64);
-		//File srcFile = new File(src);
-		
-		File src =((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE);
-		String path = System.getProperty("user.dir")+ "/screenshots/"+System.currentTimeMillis()+".png";
+		// If you find cross icon instead of image in screenshots folder then use below
+		// 2 lines
+		// String src =
+		// ((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.BASE64);
+		// File srcFile = new File(src);
+
+		File src = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+		String path = System.getProperty("user.dir") + "/screenshots/" + System.currentTimeMillis() + ".png";
 		File destination = new File(path);
 		try {
 			FileUtils.copyFile(src, destination);
@@ -105,6 +140,5 @@ public class DriverFactory {
 		}
 		return path;
 	}
-	
 
 }
